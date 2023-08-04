@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                git credentialsId: '69b845f1-edce-4b80-b515-d595c332a3ab', url: 'https://github.com/Rincewind-the-running-wizzard/surf_test.git', branch: 'main'
+            }
+        }
+
+        stage('Create file and add entry') {
+            steps {
+                sh 'touch job.log'
+                sh "echo \"$(date) - PRjob executed\" >> job.log"
+            }
+        }
+
+        stage('Commit and push changes') {
+            steps {
+                sh 'git config --global user.email "jenkins@example.com"'
+                sh 'git config --global user.name "Jenkins"'
+                sh 'git add job.log'
+                sh 'git commit -m "Add job.log entry"'
+                sh 'git push origin main'
+            }
+        }
+    }
+}
