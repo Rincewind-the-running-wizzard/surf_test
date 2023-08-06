@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    environment {
+        GITHUB_TOKEN = credentials('github-token')
+    }
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-token',
+                    url: 'https://github.com/Rincewind-the-running-wizzard/surf_test.git'
+            }
+        }
+
+        stage('Create log file') {
+            steps {
+                sh 'touch job.log'
+            }
+        }
+
+        stage('Add log entry') {
+            steps {
+                sh "echo `date +%Y-%m-%d:%H:%M:%S` - PRjob executed >> job.log"
+            }
+        }
+
+        stage('Commit changes') {
+            steps {
+                sh 'git add job.log'
+                sh 'git commit -m "Added log entry"'
+            }
+        }
+
+        stage('Push changes') {
+            steps {
+                sh 'git push origin ci'
+            }
+        }
+    }
+
+    post {
+        success {
+            mail to: 'gurov@surf.dev',
+                 subject: 'Pipeline succeeded',
+                 body: "Pipeline succeeded! Check it out at https://github.com/Rincewind-the-running-wizzard/surf_test/tree/ci"
+        }
+
+        failure {
+            mail to: 'gurov@surf.dev',
+                 subject: 'Pipeline failed',
+                 body: "Pipeline failed! Check it out at https://github.com/Rincewind-the-running-wizzard/surf_test/tree/ci"
+        }
+    }
+}
