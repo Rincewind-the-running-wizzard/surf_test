@@ -1,28 +1,56 @@
 pipeline {
     agent any
 
+    environment {
+        GITHUB_TOKEN = credentials('github-token')
+    }
+
     stages {
         stage('Clone repository') {
             steps {
-                git credentialsId: '69b845f1-edce-4b80-b515-d595c332a3ab', url: 'https://github.com/Rincewind-the-running-wizzard/surf_test.git', branch: 'main'
+                git branch: 'main',
+                    credentialsId: 'github-token',
+                    url: 'https://github.com/your-username/your-repository.git'
             }
         }
 
-        stage('Create file and add entry') {
+        stage('Create log file') {
             steps {
                 sh 'touch job.log'
-                sh "echo \"$(date) - PRjob executed\" >> job.log"
             }
         }
 
-        stage('Commit and push changes') {
+        stage('Add log entry') {
             steps {
-                sh 'git config --global user.email "jenkins@example.com"'
-                sh 'git config --global user.name "Jenkins"'
-                sh 'git add job.log'
-                sh 'git commit -m "Add job.log entry"'
-                sh 'git push origin main'
+                sh "echo `date +%Y-%m-%d:%H:%M:%S` - PRjob executed >> job.log"
             }
+        }
+
+        stage('Commit changes') {
+            steps {
+                sh 'git add job.log'
+                sh 'git commit -m "Added log entry"'
+            }
+        }
+
+        stage('Push changes') {
+            steps {
+                sh 'git push origin ci'
+            }
+        }
+    }
+
+    post {
+        success {
+            mail to: 'gurov@surf.dev',
+                 subject: 'Pipeline succeeded',
+                 body: "Pipeline succeeded! Check it out at https://github.com/your-username/your-repository/tree/ci"
+        }
+
+        failure {
+            mail to: 'gurov@surf.dev',
+                 subject: 'Pipeline failed',
+                 body: "Pipeline failed! Check it out at https://github.com/your-username/your-repository/tree/ci"
         }
     }
 }
