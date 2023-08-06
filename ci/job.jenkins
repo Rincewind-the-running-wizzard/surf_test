@@ -10,7 +10,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     credentialsId: 'github-token',
-                    url: 'https://github.com/your-username/your-repository.git'
+                    url: 'https://github.com/Rincewind-the-running-wizzard/surf_test.git'
             }
         }
 
@@ -44,13 +44,13 @@ pipeline {
         success {
             mail to: 'gurov@surf.dev',
                  subject: 'Pipeline succeeded',
-                 body: "Pipeline succeeded! Check it out at https://github.com/your-username/your-repository/tree/ci"
+                 body: "Pipeline succeeded! Check it out at https://github.com/Rincewind-the-running-wizzard/surf_test/tree/ci"
         }
 
         failure {
             mail to: 'gurov@surf.dev',
                  subject: 'Pipeline failed',
-                 body: "Pipeline failed! Check it out at https://github.com/your-username/your-repository/tree/ci"
+                 body: "Pipeline failed! Check it out at https://github.com/Rincewind-the-running-wizzard/surf_test/tree/ci"
         }
     }
 }
