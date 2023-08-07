@@ -30,11 +30,6 @@ pipeline {
             steps {
                 sh 'git add job.log'
                 sh 'git commit -m "Added log entry"'
-            }
-        }
-
-        stage('Push changes') {
-            steps {
                 sh 'git push origin docker'
             }
         }
