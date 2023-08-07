@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    environment {
+        GITHUB_TOKEN = credentials('github-token1')
+    }
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-token1',
+                    url: 'https://github.com/Rincewind-the-running-wizzard/surf_test.git'
+            }
+        }
+
+        stage('Create log file') {
+            steps {
+                sh 'touch job.log'
+            }
+        }
+
+        stage('Add log entry') {
+            steps {
+                sh "echo `date +%Y-%m-%d:%H:%M:%S` - PRjob executed >> job.log"
+            }
+        }
+
+        stage('Commit changes') {
+            steps {
+                sh 'git add job.log'
+                sh 'git commit -m "Added log entry"'
+            }
+        }
+
+        stage('Push changes') {
+            steps {
+                sh 'git push origin docker'
+            }
+        }
+    }
+}
