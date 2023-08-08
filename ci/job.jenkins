@@ -10,7 +10,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     credentialsId: 'github-token1',
-                    url: 'https://github.com/Rincewind-the-running-wizzard/surf_test.git'
+                    url: 'git@github.com:Rincewind-the-running-wizzard/surf_test.git'
             }
         }
 
