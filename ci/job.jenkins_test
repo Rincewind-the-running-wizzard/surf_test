@@ -1,18 +1,20 @@
 pipeline {
     agent any
 
-    stage('git push') {
-        steps {
-            withCredentials([
-                gitUsernamePassword(credentialsId: 'github-token1', gitToolName: 'Default')
-            ]) {
-                sh '''
-                     touch job.log
-                     echo `date +%Y-%m-%d:%H:%M:%S` - PRjob executed >> job.log
-                     git add .
-                     git commit -m "Added log"
-                     git push
-                '''
+    stages {
+        stage('git push') {
+            steps {
+                withCredentials([
+                    gitUsernamePassword(credentialsId: 'github-token1', gitToolName: 'Default')
+                ]) {
+                    sh '''
+                         touch job.log
+                         echo `date +%Y-%m-%d:%H:%M:%S` - PRjob executed >> job.log
+                         git add .
+                         git commit -m "Added log"
+                         git push
+                    '''
+                }
             }
         }
     }
