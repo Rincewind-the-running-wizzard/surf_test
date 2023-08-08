@@ -39,13 +39,13 @@ pipeline {
         success {
             mail to: 'gurov@surf.dev',
                  subject: 'Pipeline succeeded',
-                 body: "Pipeline succeeded! Check it out at https://github.com/your-username/your-repository/tree/ci"
+                 body: "Pipeline succeeded! Check it out at https://github.com/Rincewind-the-running-wizzard/surf_test.git"
         }
 
         failure {
             mail to: 'gurov@surf.dev',
                  subject: 'Pipeline failed',
-                 body: "Pipeline failed! Check it out at https://github.com/your-username/your-repository/tree/ci"
+                 body: "Pipeline failed! Check it out at https://github.com/Rincewind-the-running-wizzard/surf_test.git"
         }
     }
 }
