@@ -34,4 +34,18 @@ pipeline {
             }
         }
     }
+
+    post {
+        success {
+            mail to: 'gurov@surf.dev',
+                 subject: 'Pipeline succeeded',
+                 body: "Pipeline succeeded! Check it out at https://github.com/your-username/your-repository/tree/ci"
+        }
+
+        failure {
+            mail to: 'gurov@surf.dev',
+                 subject: 'Pipeline failed',
+                 body: "Pipeline failed! Check it out at https://github.com/your-username/your-repository/tree/ci"
+        }
+    }
 }
